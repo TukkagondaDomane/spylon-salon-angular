@@ -1,0 +1,49 @@
+<div class="page" style="position: relative">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <!-- Badge -->
+      <div class="hero-badge">✦ Bangalore's Most Loved Salon</div>
+
+      <!-- Title -->
+      <h1 class="hero-title playfair">
+        Elevate Your <br />
+        <span class="gradient-text">Natural Beauty</span>
+      </h1>
+
+      <!-- Subtext -->
+      <p class="hero-sub">
+        Premium salon experiences crafted for you. Book your perfect treatment in seconds.
+      </p>
+
+      <!-- Actions -->
+      <div class="hero-actions">
+        <button class="btn-primary" (click)="goServices()">Explore Services</button>
+
+        <!-- Show only if NOT logged in -->
+        <button *ngIf="!user" class="btn-outline" (click)="goAuth()">Get Started Free</button>
+      </div>
+    </div>
+  </section>
+  <div class="stats-bar">
+    <div class="stat" *ngFor="let s of stats">
+      <div class="stat-num gradient-text">{{ s.number }}</div>
+      <div class="stat-label">{{ s.label }}</div>
+    </div>
+  </div>
+  <!-- FEATURES SECTION -->
+  <div class="features-section">
+    <div class="section-header">
+      <h2 class="section-title playfair">Why Choose <span class="gradient-text">Spylon</span></h2>
+      <p class="section-sub">We don't just cut hair. We craft experiences.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let f of features">
+        <div class="feature-icon">{{ f.icon }}</div>
+        <div class="feature-title playfair">{{ f.title }}</div>
+        <div class="feature-desc">{{ f.desc }}</div>
+      </div>
+    </div>
+  </div>
+</div>

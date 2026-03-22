@@ -1,0 +1,54 @@
+<nav class="navbar">
+  <!-- Logo -->
+  <div class="nav-logo" routerLink="/">Spylon</div>
+
+  <div class="nav-links">
+    <!-- NOT LOGGED IN -->
+    <ng-container *ngIf="!userLoggedIn">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link"
+      >
+        Home
+      </a>
+
+      <a routerLink="/services" routerLinkActive="active" class="nav-link"> Services </a>
+
+      <button class="btn-primary" routerLink="/auth">Sign In</button>
+    </ng-container>
+
+    <!-- LOGGED IN -->
+    <ng-container *ngIf="userLoggedIn">
+      <a routerLink="/services" routerLinkActive="active" class="nav-link"> Services </a>
+
+      <a routerLink="/bookings" routerLinkActive="active" class="nav-link"> My Bookings </a>
+
+      <div class="profile-box" routerLink="/profile">U</div>
+    </ng-container>
+  </div>
+
+  <!-- Burger -->
+  <button class="burger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" *ngIf="isMenuOpen">
+  <!-- NOT LOGGED IN -->
+  <ng-container *ngIf="!userLoggedIn">
+    <a routerLink="/" class="mobile-nav-link">Home</a>
+    <a routerLink="/services" class="mobile-nav-link">Services</a>
+    <button class="btn-primary" routerLink="/auth">Sign In</button>
+  </ng-container>
+
+  <!-- LOGGED IN -->
+  <ng-container *ngIf="userLoggedIn">
+    <a routerLink="/services" class="mobile-nav-link">Services</a>
+    <a routerLink="/bookings" class="mobile-nav-link">My Bookings</a>
+  </ng-container>
+</div>

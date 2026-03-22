@@ -1,0 +1,70 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="gradient-text brand">Spylon</div>
+      <div class="brand-sub">Premium Salon</div>
+    </div>
+
+    <!-- Toggle -->
+    <div class="form-toggle">
+      <button class="form-toggle-btn" [class.active]="mode === 'login'" (click)="setMode('login')">
+        Sign In
+      </button>
+
+      <button
+        class="form-toggle-btn"
+        [class.active]="mode === 'signup'"
+        (click)="setMode('signup')"
+      >
+        Sign Up
+      </button>
+    </div>
+
+    <!-- Full Name (signup only) -->
+    <div class="form-group" *ngIf="mode === 'signup'">
+      <label class="form-label">Full Name</label>
+      <input class="input-field" placeholder="Your name" [(ngModel)]="form.name" />
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input
+        class="input-field"
+        type="email"
+        placeholder="you@email.com"
+        [(ngModel)]="form.email"
+      />
+    </div>
+
+    <!-- Phone (signup only) -->
+    <div class="form-group" *ngIf="mode === 'signup'">
+      <label class="form-label">Phone</label>
+      <input class="input-field" placeholder="+91 98765 43210" [(ngModel)]="form.phone" />
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input
+        class="input-field"
+        type="password"
+        placeholder="••••••••"
+        [(ngModel)]="form.password"
+      />
+    </div>
+
+    <!-- Submit -->
+    <button class="btn-primary auth-btn" (click)="handle()" [disabled]="loading">
+      <span *ngIf="loading" class="spinner"></span>
+
+      <span *ngIf="!loading">
+        {{ mode === 'login' ? 'Sign In →' : 'Create Account →' }}
+      </span>
+
+      <span *ngIf="loading">Processing...</span>
+    </button>
+  </div>
+</div>
+<app-toast [toast]="toast" (close)="clearToast()"> </app-toast>

@@ -1,0 +1,4 @@
+<div *ngIf="toast" class="toast" [ngClass]="toast.type">
+  <span class="toast-icon">{{ icons[toast.type] }}</span>
+  <span class="toast-msg">{{ toast.msg }}</span>
+</div>

@@ -1,0 +1,65 @@
+<div class="page">
+  <div class="services-page">
+    <!-- Header -->
+    <div class="section-header">
+      <h2 class="section-title">Our <span class="gradient-text">Services</span></h2>
+      <p class="section-sub">Handcrafted treatments for every need and occasion</p>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-row">
+      <button
+        *ngFor="let c of CATEGORIES"
+        class="filter-btn"
+        [class.active]="category === c"
+        (click)="setCategory(c)"
+      >
+        {{ c }}
+      </button>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="services-grid">
+      <div *ngFor="let s of filtered" class="service-card">
+        <!-- icon area -->
+        <!-- <div
+          class="service-img"
+          [ngStyle]="{
+            background: 'radial-gradient(circle at 50% 60%, ' + s.color + '30, transparent)',
+          }"
+        >
+          ✂️
+        </div> -->
+
+        <div class="service-body">
+          <div class="service-name">{{ s.name }}</div>
+          <div class="service-desc">{{ s.desc }}</div>
+
+          <!-- stylist section -->
+          <div class="staff-section">
+            <div class="staff-label">Available Stylists</div>
+
+            <div class="staff-list">
+              <div class="staff-chip" *ngFor="let st of STAFF | slice: 0 : 3">
+                <span>{{ st.emoji }}</span>
+                <span class="staff-name">
+                  {{ st.name.split(' ')[0] }}
+                </span>
+              </div>
+
+              <div class="staff-chip more">+{{ STAFF.length - 3 }} more</div>
+            </div>
+          </div>
+
+          <div class="service-meta">
+            <span class="service-price">₹{{ s.price }}</span>
+            <span class="service-duration">⏱ {{ s.duration }}</span>
+          </div>
+
+          <button class="book-btn" (click)="book(s)">Book Now ✦</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-toast [toast]="toast" (close)="clearToast()"> </app-toast>

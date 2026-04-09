@@ -105,3 +105,22 @@
   justify-content: center;
   gap: 10px;
 }
+.password-field {
+  position: relative;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.eye-btn:hover {
+  color: var(--gold);
+}

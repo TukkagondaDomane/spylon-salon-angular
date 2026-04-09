@@ -41,14 +41,14 @@
 <div class="mobile-menu" *ngIf="isMenuOpen">
   <!-- NOT LOGGED IN -->
   <ng-container *ngIf="!userLoggedIn">
-    <a routerLink="/" class="mobile-nav-link">Home</a>
-    <a routerLink="/services" class="mobile-nav-link">Services</a>
-    <button class="btn-primary" routerLink="/auth">Sign In</button>
+    <a routerLink="/" class="mobile-nav-link" (click)="closeMenu()">Home</a>
+    <a routerLink="/services" class="mobile-nav-link" (click)="closeMenu()">Services</a>
+    <button class="btn-primary" routerLink="/auth" (click)="closeMenu()">Sign In</button>
   </ng-container>
 
   <!-- LOGGED IN -->
   <ng-container *ngIf="userLoggedIn">
-    <a routerLink="/services" class="mobile-nav-link">Services</a>
-    <a routerLink="/bookings" class="mobile-nav-link">My Bookings</a>
+    <a routerLink="/services" class="mobile-nav-link" (click)="closeMenu()">Services</a>
+    <a routerLink="/bookings" class="mobile-nav-link" (click)="closeMenu()">My Bookings</a>
   </ng-container>
 </div>

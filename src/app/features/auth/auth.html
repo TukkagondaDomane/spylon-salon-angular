@@ -38,25 +38,25 @@
       />
     </div>
 
-    <!-- Phone (signup only) -->
-    <div class="form-group" *ngIf="mode === 'signup'">
-      <label class="form-label">Phone</label>
-      <input class="input-field" placeholder="+91 98765 43210" [(ngModel)]="form.phone" />
-    </div>
-
-    <!-- Password -->
     <div class="form-group">
       <label class="form-label">Password</label>
-      <input
-        class="input-field"
-        type="password"
-        placeholder="••••••••"
-        [(ngModel)]="form.password"
-      />
+
+      <div class="password-field">
+        <input
+          class="input-field"
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="••••••••"
+          [(ngModel)]="form.password"
+        />
+
+        <button type="button" class="eye-btn" (click)="togglePassword()" *ngIf="form.password">
+          <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
     </div>
 
     <!-- Submit -->
-    <button class="btn-primary auth-btn" (click)="handle()" [disabled]="loading">
+    <button class="btn-primary auth-btn" (click)="handleAuth()" [disabled]="loading">
       <span *ngIf="loading" class="spinner"></span>
 
       <span *ngIf="!loading">
@@ -67,4 +67,4 @@
     </button>
   </div>
 </div>
-<app-toast [toast]="toast" (close)="clearToast()"> </app-toast>
+<app-toast [toast]="toast"> </app-toast>

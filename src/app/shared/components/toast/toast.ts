@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,9 +18,7 @@ export class Toast implements OnInit {
     info: '💫',
   };
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.close.emit();
-    }, 3500);
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {}
 }

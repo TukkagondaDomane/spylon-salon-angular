@@ -220,23 +220,7 @@ body {
   color: var(--bg);
 }
 
-/* Inputs */
-.input-field {
-  background: var(--card2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  border-radius: var(--radius-sm);
-  transition: border-color 0.3s;
-  outline: none;
-  width: 100%;
-}
-.input-field:focus {
-  border-color: var(--gold);
-}
-.input-field::placeholder {
-  color: var(--muted);
-}
+/* Inputs
 
 /* Tags */
 .tag {

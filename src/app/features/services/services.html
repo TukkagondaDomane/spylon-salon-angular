@@ -9,7 +9,7 @@
     <!-- Filter -->
     <div class="filter-row">
       <button
-        *ngFor="let c of CATEGORIES"
+        *ngFor="let c of categories"
         class="filter-btn"
         [class.active]="category === c"
         (click)="setCategory(c)"
@@ -20,46 +20,51 @@
 
     <!-- Services Grid -->
     <div class="services-grid">
-      <div *ngFor="let s of filtered" class="service-card">
-        <!-- icon area -->
-        <!-- <div
-          class="service-img"
-          [ngStyle]="{
-            background: 'radial-gradient(circle at 50% 60%, ' + s.color + '30, transparent)',
-          }"
-        >
-          ✂️
-        </div> -->
-
+      <div *ngFor="let service of filtered" class="service-card">
         <div class="service-body">
-          <div class="service-name">{{ s.name }}</div>
-          <div class="service-desc">{{ s.desc }}</div>
+          <div class="service-name">{{ service.name }}</div>
+          <div class="service-desc">{{ service.desc }}</div>
 
           <!-- stylist section -->
           <div class="staff-section">
             <div class="staff-label">Available Stylists</div>
 
-            <div class="staff-list">
-              <div class="staff-chip" *ngFor="let st of STAFF | slice: 0 : 3">
+            <!-- <div class="staff-list">
+              <div
+                class="staff-chip"
+                *ngFor="let st of getStylistsForService(service.category) | slice: 0 : 3"
+              >
                 <span>{{ st.emoji }}</span>
                 <span class="staff-name">
                   {{ st.name.split(' ')[0] }}
                 </span>
               </div>
 
-              <div class="staff-chip more">+{{ STAFF.length - 3 }} more</div>
+              <div class="staff-chip more">+{{ staff.length - 3 }} more</div>
+            </div> -->
+            <div class="staff-list" *ngIf="getStylistsForService(service.category) as stylists">
+              <div class="staff-chip" *ngFor="let st of stylists | slice: 0 : 3">
+                <span>{{ st.emoji }}</span>
+                <span class="staff-name">
+                  {{ st.name.split(' ')[0] }}
+                </span>
+              </div>
+
+              <div class="staff-chip more" *ngIf="stylists.length > 3">
+                +{{ stylists.length - 3 }} more
+              </div>
             </div>
           </div>
 
           <div class="service-meta">
-            <span class="service-price">₹{{ s.price }}</span>
-            <span class="service-duration">⏱ {{ s.duration }}</span>
+            <span class="service-price">₹{{ service.price }}</span>
+            <span class="service-duration">⏱ {{ service.duration }}</span>
           </div>
 
-          <button class="book-btn" (click)="book(s)">Book Now ✦</button>
+          <button class="book-btn" (click)="book(service)">Book Now ✦</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-<app-toast [toast]="toast" (close)="clearToast()"> </app-toast>
+<app-toast [toast]="toast"> </app-toast>

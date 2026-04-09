@@ -25,24 +25,24 @@
       </div>
     </div>
   </section>
-  <div class="stats-bar">
-    <div class="stat" *ngFor="let s of stats">
-      <div class="stat-num gradient-text">{{ s.number }}</div>
-      <div class="stat-label">{{ s.label }}</div>
+  <div class="stats-bar" *ngIf="stats.length > 0">
+    <div class="stat" *ngFor="let stat of stats">
+      <div class="stat-num gradient-text">{{ stat.number }}</div>
+      <div class="stat-label">{{ stat.label }}</div>
     </div>
   </div>
   <!-- FEATURES SECTION -->
-  <div class="features-section">
+  <div class="features-section" *ngIf="features.length > 0">
     <div class="section-header">
       <h2 class="section-title playfair">Why Choose <span class="gradient-text">Spylon</span></h2>
       <p class="section-sub">We don't just cut hair. We craft experiences.</p>
     </div>
 
     <div class="features-grid">
-      <div class="feature-card" *ngFor="let f of features">
-        <div class="feature-icon">{{ f.icon }}</div>
-        <div class="feature-title playfair">{{ f.title }}</div>
-        <div class="feature-desc">{{ f.desc }}</div>
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <div class="feature-title playfair">{{ feature.title }}</div>
+        <div class="feature-desc">{{ feature.desc }}</div>
       </div>
     </div>
   </div>

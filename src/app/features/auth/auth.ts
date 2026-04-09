@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Toast } from '../../shared/components/toast/toast';
+import { FirebaseDataService } from '../../shared/services/firebase-data.service';
 
 @Component({
   selector: 'app-auth',
@@ -10,57 +11,120 @@ import { Toast } from '../../shared/components/toast/toast';
   imports: [CommonModule, FormsModule, Toast],
   templateUrl: './auth.html',
   styleUrls: ['./auth.scss'],
+  providers: [Toast],
 })
 export class Auth {
   mode: 'login' | 'signup' = 'login';
   loading = false;
   toast: any = null;
+  showPassword = false;
 
   form = {
     name: '',
     email: '',
     password: '',
-    phone: '',
   };
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private toastService: Toast,
+    private dataService: FirebaseDataService,
+  ) {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state as any;
 
     if (state?.showToast) {
-      this.toast = {
-        msg: 'Please sign in to book',
-        type: 'info',
-      };
+      this.showToast('Please sign in to book', 'info');
     }
   }
 
-  handle() {
-    if (!this.form.email || !this.form.password) return;
-    if (this.mode === 'signup' && !this.form.name) return;
+  handleAuth() {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
 
-    this.loading = true;
+    const email = this.form.email?.trim();
+    const password = this.form.password?.trim();
 
-    setTimeout(() => {
+    if (!this.form.name || !email || !password) {
+      this.showToast('Please fill in all fields', 'error');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      this.showToast('Enter a valid email address', 'error');
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      this.showToast('Password must be 6+ chars with letters & numbers', 'error');
+      return;
+    }
+
+    if (this.mode === 'signup') {
+      this.signup(this.form.name, this.form.email, this.form.password);
+    } else {
+      this.login(email, password);
+    }
+  }
+
+  async signup(name: string, email: string, password: string) {
+    try {
+      this.loading = true;
+
+      const res = await this.dataService.signup(name, email, password);
+
+      if (res?.user) {
+        this.router.navigate(['/services'], {
+          state: { showToast: true },
+        });
+      }
+    } catch (e) {
+      this.showToast('Something went wrong!', 'error');
+    } finally {
       this.loading = false;
+    }
+  }
 
-      const user = {
-        name: this.form.name || this.form.email.split('@')[0],
-        email: this.form.email,
-        phone: this.form.phone || '+91 98765 43210',
-        wallet: 500,
-      };
+  async login(email: string, password: string) {
+    try {
+      this.loading = true;
 
-      localStorage.setItem('user', JSON.stringify(user));
+      const res = await this.dataService.login(email, password);
+
+      const user = res.user;
+
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: user.displayName || user.email?.split('@')[0],
+          email: user.email,
+        }),
+      );
 
       this.router.navigate(['/services']);
-    }, 1500);
+    } catch (e) {
+      this.showToast('Invalid credentials', 'error');
+    } finally {
+      this.loading = false;
+    }
   }
 
-  setMode(m: 'login' | 'signup') {
-    this.mode = m;
+  setMode(mode: 'login' | 'signup') {
+    this.mode = mode;
   }
-  clearToast() {
-    this.toast = null;
+  showToast(msg: string, type: string) {
+    this.toast = { msg, type };
+    this.toast = {
+      msg: msg,
+      type: type,
+    };
+    setTimeout(() => {
+      this.toast = null;
+      this.cdr.detectChanges();
+    }, 3500);
+  }
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

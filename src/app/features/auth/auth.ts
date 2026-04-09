@@ -46,7 +46,7 @@ export class Auth {
     const email = this.form.email?.trim();
     const password = this.form.password?.trim();
 
-    if (!this.form.name || !email || !password) {
+    if (!email || !password) {
       this.showToast('Please fill in all fields', 'error');
       return;
     }
@@ -62,7 +62,12 @@ export class Auth {
     }
 
     if (this.mode === 'signup') {
-      this.signup(this.form.name, this.form.email, this.form.password);
+      if (!this.form.name) {
+        this.showToast('Please fill in all fields', 'error');
+        return;
+      } else {
+        this.signup(this.form.name, this.form.email, this.form.password);
+      }
     } else {
       this.login(email, password);
     }
@@ -76,11 +81,12 @@ export class Auth {
 
       if (res?.user) {
         this.router.navigate(['/services'], {
-          state: { showToast: true },
+          state: { showToast: 'signup' },
         });
       }
     } catch (e) {
       this.showToast('Something went wrong!', 'error');
+      this.cdr.detectChanges();
     } finally {
       this.loading = false;
     }
@@ -92,19 +98,13 @@ export class Auth {
 
       const res = await this.dataService.login(email, password);
 
-      const user = res.user;
-
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          name: user.displayName || user.email?.split('@')[0],
-          email: user.email,
-        }),
-      );
-
-      this.router.navigate(['/services']);
-    } catch (e) {
-      this.showToast('Invalid credentials', 'error');
+      if (res?.user) {
+        this.router.navigate(['/services'], {
+          state: { showToast: 'login' },
+        });
+      }
+    } catch (e: any) {
+      this.showToast('Invalid email or password', 'error');
     } finally {
       this.loading = false;
     }
@@ -126,5 +126,30 @@ export class Auth {
   }
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  async forgotPassword() {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const email = this.form.email?.trim();
+
+    if (!email) {
+      this.showToast('Enter your email first', 'info');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      this.showToast('Enter a valid email address', 'error');
+      this.cdr.detectChanges();
+      return;
+    }
+
+    try {
+      await this.dataService.resetPassword(email);
+      this.showToast('If an account exists, reset email sent', 'success');
+      this.cdr.detectChanges();
+    } catch (e) {
+      this.showToast('Reset failed', 'error');
+      this.cdr.detectChanges();
+    }
   }
 }

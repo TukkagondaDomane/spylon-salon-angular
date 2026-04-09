@@ -35,9 +35,12 @@ export class Services implements OnInit {
     private toastService: Toast,
   ) {
     const state = history.state as any;
-
-    if (state?.showToast) {
+    if (state?.showToast === 'signup') {
       this.showToast('Account created successfully', 'success');
+    }
+
+    if (state?.showToast === 'login') {
+      this.showToast('Welcome back!', 'success');
     }
   }
   async ngOnInit() {
